@@ -8,20 +8,35 @@ const pacientes = [
 
 
 module.exports.listarPacientes = async (event) => {
-
   console.log(event)
-
-  
-
   return {
     statusCode: 200,
     body: JSON.stringify(
       {
-        event
+        pacientes
       },
       null,
       2
     ),
+  };
+
+ };
+
+
+ module.exports.obterPacientes = async (event) => {
+  const { pacienteId } = event.pathParameters;
+  const paciente = pacientes.find(paciente => paciente.id == pacienteId)
+
+  if(paciente === undefined){
+    return{
+      statusCode:404,
+      body: JSON.stringify({ error: 'Paciente não existe'}, null, 2)
+    }
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify( paciente, null, 2),
   };
 
  };
